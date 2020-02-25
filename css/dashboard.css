@@ -1,0 +1,313 @@
+body {
+  background: #5F708C;
+  width:100vw;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+
+.Clock1 {
+  position: absolute;
+  bottom: 50%;
+  right: 50%%;
+  height: 70px;
+  width: 200px;
+
+  margin: auto;
+}
+
+
+
+
+.leftColumn {
+  position: absolute;
+  top: 10px;
+  left: 6%;
+  height: 90vh;
+  width: 25%;
+  min-width: 300px;
+  margin: auto;
+}
+
+.centerColumn {
+  position: absolute;
+  top: 10px;
+  left: 32%;
+  height: 1300px;
+  width: 35%;
+  min-width: 300px;
+  margin: auto;
+}
+
+
+.rightColumn {
+  position: absolute;
+  top: 10px;
+  right: 7%;
+  height: 1500px;
+  width: 25%;
+  min-width: 300px;
+  margin: auto;
+}
+
+.description {
+  position: absolute;
+  width: 100%;
+  height: 175px;
+  top: 0px;
+  background-color: blue;
+
+}
+
+.location {
+  text-align: center;
+  padding-left: 20px;
+}
+
+.currentwx {
+  text-align: center;
+  padding-left: 20px;
+  font-size: 45px;
+  color: #E5E5E7;
+}
+
+
+.wxImage {
+  position: absolute;
+  background: #cccc;
+  background-image: url('H:/Web/radar_working/test/bootstrap/images/NorthDakotaRoad.jpg');
+  /* Full height & width */
+  height: 100%;
+  width: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* create a border */
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+
+}
+
+
+.tempholder {
+  position: absolute;
+  left: 0%;
+  width: 48%;
+  height: 260px;
+  top: 180px;
+  border-style: solid;
+  boder-color: blakc;
+  border-width: 2px;
+  /* background-color: rgb(128,128,128,0.6); */
+  background-color:  #DADADA;
+
+}
+
+.tempgauge {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  height: 50%;
+
+}
+.temp {
+  position:absolute;
+  text-align: center;
+  font-size: 30px;
+  top: 55%;
+  left: 2%;
+  width: 100%;
+}
+
+.humidityholder {
+  position: absolute;
+  right: 0%;
+  width: 48%;
+  height: 260px;
+  top: 180px;
+  border-style: solid;
+  boder-color: blakc;
+  border-width: 2px;
+  /* background-color: rgb(128,128,128,0.6); */
+  background-color: #DADADA;
+}
+
+.humiditygauge {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  height: 50%;
+
+}
+
+.humidity {
+  position:absolute;
+  text-align: center;
+  font-size: 30px;
+  top: 55%;
+  left: 2%;
+  width: 100%;
+}
+
+
+.pressureholder {
+  position: absolute;
+  left: 0%;
+  width: 48%;
+  height: 260px;
+  top: 450px;
+  border-style: solid;
+  boder-color: blakc;
+  border-width: 2px;
+  /* background-color: rgb(128,128,128,0.6); */
+  background-color: #DADADA;
+}
+
+.pressuregauge {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  height: 50%;
+
+}
+
+.pressure {
+  position:absolute;
+  text-align: center;
+  font-size: 30px;
+  top: 55%;
+  left: 2%;
+  width: 100%;
+}
+
+
+.windholder {
+  position: absolute;
+  right: 0%;
+  width: 48%;
+  height: 260px;
+  top: 450px;
+  border-style: solid;
+  boder-color: blakc;
+  border-width: 2px;
+  /* background-color: rgb(128,128,128,0.6); */
+  background-color: #DADADA;
+}
+
+.windgauge {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 90%;
+  border-style: solid;
+  boder-color: black;
+  border-width: 1px;
+}
+
+.windspeed {
+  position:absolute;
+  text-align: center;
+  font-size: 30px;
+  top: 60%;
+  left: 2%;
+  width: 100%;
+}
+
+.winddirection {
+  position:absolute;
+  text-align: center;
+  font-size: 30px;
+  top: 75%;
+  left: 2%;
+  width: 100%;
+}
+
+.windArrow {
+  position:absolute;
+  top: 10%;
+  left: 35%;
+  width: 35%;
+  height: 35%;
+
+}
+
+.meteogramHolder {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  height: 600px;
+  top: 730px;
+
+  background-color: gray;
+}
+
+.meteogram {
+  position: absolute;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.UCARsurface {
+  position: absolute;
+  top: 0px;
+  height: 510px;
+  right: 0px;
+  width: 100%;
+}
+
+.TwitterFeed {
+  position: absolute;
+  top: 520px;
+  height: 810px;
+  width: 100%;
+  right: 2px;
+  border: 2;
+  border-style: solid;
+  border-color: black;
+}
+
+.SPCoutlook {
+  height: 48%;
+  width: 100%;
+  background-color: white;
+  border: solid;
+  border-color: 'black';
+  border-width: 2px;
+  margin-top: 3px;
+}
+
+
+.WPCqpf {
+  height: 48%;
+  width: 100%;
+  background-color: white;
+  border: solid;
+  border-color: 'black';
+  border-width: 2px;
+  margin-top: 3px;
+}
+
+.radar {
+  height: 48%;
+  width: 100%;
+  background-color: white;
+  border: solid;
+  border-color: 'black';
+  border-width: 2px;
+}
+
+
+
+
+.show {display: block;}

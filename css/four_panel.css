@@ -1,0 +1,204 @@
+body {
+  background: #cccc;
+  width:100vw;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+.leaflet-radar {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 67.5px;
+}
+
+.leaflet-radar .leaflet-radar-timestamp {
+        text-align: center;
+}
+
+
+.leaflet-sat {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 67.5px;
+}
+
+.leaflet-sat .leaflet-sat-timestamp {
+        text-align: center;
+}
+
+.leaflet-glm {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 67.5px;
+}
+
+.leaflet-glm .leaflet-glm-timestamp {
+        text-align: center;
+}
+
+.leaflet-surface {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 25px;
+}
+
+.leaflet-surface .leaflet-surface-timestamp {
+        text-align: center;
+}
+
+.leaflet-temp {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 25px;
+}
+
+.leaflet-temp .leaflet-temp-timestamp {
+        text-align: center;
+}
+
+.leaflet-dewp {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 25px;
+}
+
+.leaflet-dewp .leaflet-dewp-timestamp {
+        text-align: center;
+}
+
+
+.leaflet-wwa {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 25px;
+}
+
+.leaflet-watch {
+
+        /* from leaflet-control-layers */
+        border-radius: 5px;
+        background: #fff;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        background-clip: padding-box;
+
+        padding: 5px;
+        height: 25px;
+}
+
+.UpperLeftHolder {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 50vh;
+        width: 50vw;
+        background: #cccc;
+        border: solid;
+        border-color: 'black';
+        border-width: 2px;
+}
+
+.UpperRightHolder {
+        position: fixed;
+        right: 0px;
+        top: 0px;
+        height: 50vh;
+        width: 50vw;
+        background: #cccc;
+        border: solid;
+        border-color: 'black';
+        border-width: 2px;
+}
+
+.LowerLeftHolder {
+        position: fixed;
+        left: 0px;
+        bottom: 0px;
+        height: 50vh;
+        width: 50vw;
+        background: #cccc;
+        border: solid;
+        border-color: 'black';
+        border-width: 2px;
+}
+
+.LowerRightHolder {
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+        height: 50vh;
+        width: 50vw;
+        background: #F2F4F4;
+        border: solid;
+        border-color: 'black';
+        border-width: 2px;
+}
+
+.MesoImage {
+        position: absolute;
+        height: 87%;
+        width: 50%;
+        left: 0px;
+        border: solid;
+        border-color: 'black';
+        border-width: 1px;
+}
+
+.MesoImage2 {
+        position: absolute;
+        height: 87%;
+        width: 50%;
+        right: 0px;
+        border: solid;
+        border-color: 'black';
+        border-width: 1px;
+}
+
+@media screen and (max-width:480px){
+  .MesoImage2 img {
+    display: none;
+  }
+}
