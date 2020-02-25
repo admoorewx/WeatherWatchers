@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="refresh" content="300" >
+
+  <title>Dashboard</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Non-Template sytles and JS links -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/leaflet_radar.css">
+  <link rel="stylesheet" type="text/css" href="css/dashboard.css">
+  <script src="js/leaflet_radar.js"></script>
+  <script type="text/javascript" src="js/gauge.min.js"></script>
+
+
+</head>
+
+<body>
+
+  <!-- clock -->
+  <!-- <div class="Clock1">
+    <center style="font-size:150%;">Current UTC Time:</center>
+  <center id='utc'></center> -->
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Weather Watchers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Dashboard
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Radar</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="fourPanel.html">Four Panel</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="soundings.html">Soundings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mesoanalysis</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section>
+    <div class="leftColumn">
+      <!--<a href="https://weather.gov"> <img class="USwwa" id="usWWA" src="https://forecast.weather.gov/wwamap/png/US.png" alt="MesoImage" border="2"></a>-->
+      <div class="radar" id="map"></div>
+      <a href="https://www.spc.noaa.gov/products/outlook/"> <img class="SPCoutlook" id="spcOutlook" src="https://www.spc.noaa.gov/products/outlook/day1otlk.gif" alt="MesoImage" border="2"></a>
+      <a href="https://www.wpc.ncep.noaa.gov/index.php#page=qpf"> <img class="WPCqpf" id="wpcQPF" src="https://www.wpc.ncep.noaa.gov/qpf/fill_94qwbg.gif" alt="MesoImage" border="2"></a>
+    </div><!-- End left Column -->
+
+
+
+    <div class="centerColumn">
+      <div class="description">
+          <div class="wxImage">
+          <h1 class="location" id="location"></h1>
+        <h1 class="currentwx" id="description"></h1>
+          </div>
+
+      <div class="tempholder" id="tempholder">
+          <canvas class="tempgauge" id="tempgauge">guage</canvas>
+        <h1 class="temp" id="temp"></h1>
+          </div>
+
+      <div class="humidityholder" id="humidityholder">
+          <canvas class="humiditygauge" id="humiditygauge">guage</canvas>
+        <h1 class="humidity" id="humidity"></h1>
+          </div>
+
+      <div class="pressureholder" id="pressureholder">
+          <canvas class="pressuregauge" id="pressuregauge">guage</canvas>
+        <h1 class="pressure" id="pressure"></h1>
+          </div>
+
+      <div class="windholder" id="windholder">
+        <!--<canvas class="windgauge" id="windgauge">guage</canvas> -->
+        <img src="./images/windArrow3.png" class="windArrow" id="windArrow">
+        <h1 class="windspeed" id="windspeed"></h1>
+        <h1 class="winddirection" id="winddirection"></h1>
+          </div> <!-- End windholder -->
+
+    <div class="meteogramHolder" id="meteogram">
+            <img class="meteogram" src="H:\Web\meteograms\GFK_meteogram.png">
+          </div> <!-- End meteogramHolder -->
+      </div> <!-- End description -->
+    </div> <!-- End Center Column -->
+
+
+    <div class="rightColumn">
+      <a href="http://weather.rap.ucar.edu/"> <img class="UCARsurface" id="ucarSurface" src="http://weather.rap.ucar.edu/model/ruc00hr_sfc_temp.gif" alt="MesoImage" border="2"></a>
+      <div class="TwitterFeed">
+        <a class="twitter-timeline" data-height="810" href="https://twitter.com/Andrew_Of_Moore/lists/weather-watchers?ref_src=twsrc%5Etfw"></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+
+    </div> <!-- End rightColumn -->
+
+
+
+  </section>
+
+  <script type="text/javascript">
+
+          var map = L.map("map").setView([44.37, -95.12], 5);
+          var osmAttribution ='Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+          var leafletRadarAttribution ='<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+          L.tileLayer(
+                  "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                  {
+                          attribution: [
+                              osmAttribution,
+                              leafletRadarAttribution
+                          ].join(" | ")
+                  }
+          ).addTo(map);
+          L.control.radar({}).addTo(map);
+          L.control.wwa({}).addTo(map);
+          L.control.watch({}).addTo(map);
+          window.onload = onPageLoad_ClickRadar();
+          window.onload = onPageLoad_ClickWWA();
+          window.onload = onPageLoad_ClickWATCH();
+  </script>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnres.willyweather.com/widget/warning/loadView.html?id=107463" type="application/javascript"></script>
+  <script type="text/javascript" src="js/dashboard.js"></script>
+
+</body>
+
+</html>

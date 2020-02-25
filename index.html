@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="refresh" content="300" >
+
+  <title>CONUS Radar</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Non-Template sytles and JS links -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/leaflet_radar.css">
+  <script src="js/leaflet_radar.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Weather Watchers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">Dashboard</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Radar
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="fourPanel.html">Four Panel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="soundings.html">Soundings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mesoanalysis</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section>
+    <div class="mapHolder" id="map">
+        <h1>  </h1>
+        <script type="text/javascript">
+
+                var map = L.map("map").setView([40.37, -95.12], 5);
+                var osmAttribution ='Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                var leafletRadarAttribution ='<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+                L.tileLayer(
+                        "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                        {
+                                attribution: [
+                                    osmAttribution,
+                                    leafletRadarAttribution
+                                ].join(" | ")
+                        }
+                ).addTo(map);
+                L.control.radar({}).addTo(map);
+                L.control.wwa({}).addTo(map);
+                L.control.watch({}).addTo(map);
+                window.onload = onPageLoad_ClickRadar();
+                window.onload = onPageLoad_ClickWWA();
+                window.onload = onPageLoad_ClickWATCH();
+        </script>
+      </div>
+
+  </section>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

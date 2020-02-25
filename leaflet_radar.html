@@ -1,0 +1,45 @@
+<html lang="en">
+        <head>
+                <meta charset ="UTF-8" />
+                <title>CONUS Radar</title>
+		<meta http-equiv="refresh" content="300" >
+
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+                <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+                <link rel="stylesheet" href="leaflet_radar.css"></script>
+                <script src="leaflet_radar.js"></script>
+
+        </head>
+
+        <body style="padding: 0; margin: 0;">
+                <div style="height: 100%; width: 100%;" id="map"></div>
+
+                <script type="text/javascript">
+
+                        var map = L.map("map").setView([40.37, -95.12], 5);
+
+                        var osmAttribution =
+                                'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                        var leafletRadarAttribution =
+                                '<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+                        L.tileLayer(
+                                "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                                {
+                                        attribution: [
+                                                osmAttribution,
+                                                leafletRadarAttribution
+                                        ].join(" | ")
+                                }
+                        ).addTo(map);
+                        L.control.radar({}).addTo(map);
+						L.control.wwa({}).addTo(map);
+			window.onload = onPageLoad_ClickRadar();
+			window.onload = onPageLoad_ClickWWA();
+                </script>
+        </body>
+
+</html>

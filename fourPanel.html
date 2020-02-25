@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="refresh" content="300" >
+
+  <title>Four Panel</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Non-Template sytles and JS links -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/four_panel.css">
+  <link rel="stylesheet" href="css/leaflet_radar.css">
+  <script src="js/leaflet_radar.js"></script>
+  <script src="js/leaflet_sat.js"></script>
+  <script src="js/leaflet_surface_single.js"></script>
+  <script type="text/javascript" src="js/mesoanalysis_rotate.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Weather Watchers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">Dashboard</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Radar</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Four Panel
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="soundings.html">Soundings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mesoanalysis</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section>
+      <div class="UpperLeftHolder" id="map2">
+          <h1>  </h1>
+          <script type="text/javascript">
+                  var map2 = L.map("map2").setView([41.37, -96.5], 4);
+                  var osmAttribution ='Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                  var leafletRadarAttribution ='<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+                  L.tileLayer(
+                          "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                          {
+                                  attribution: [
+                                      osmAttribution,
+                                      leafletRadarAttribution
+                                  ].join(" | ")
+                          }
+                  ).addTo(map2);
+                  L.control.radar({}).addTo(map2);
+                  L.control.wwa({}).addTo(map2);
+                  L.control.watch({}).addTo(map2);
+                  window.onload = onPageLoad_ClickRadar();
+                  window.onload = onPageLoad_ClickWWA();
+                  window.onload = onPageLoad_ClickWATCH();
+          </script>
+        </div>
+
+        <div class="UpperRightHolder" id="map">
+            <h1>  </h1>
+            <script type="text/javascript">
+                    var map = L.map("map").setView([41.37, -96.5], 4);
+                    var osmAttribution ='Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                    var leafletRadarAttribution ='<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+                    L.tileLayer(
+                            "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                            {
+                                    attribution: [
+                                        osmAttribution,
+                                        leafletRadarAttribution
+                                    ].join(" | ")
+                            }
+                    ).addTo(map);
+                    L.control.sat({}).addTo(map);
+                    L.control.glm({}).addTo(map);
+                    window.onload = onPageLoad_ClickSat();
+                    window.onload = onPageLoad_ClickGLM();
+            </script>
+          </div>
+
+          <div class="LowerLeftHolder" id="map3">
+              <h1>  </h1>
+              <script type="text/javascript">
+                      var map3 = L.map("map3").setView([38.37, -96.5], 4);
+                      var osmAttribution ='Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                      var leafletRadarAttribution ='<a href="https://github.com/rwev/leaflet-radar">Radar</a>';
+
+                      L.tileLayer(
+                              "https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                              {
+                                      attribution: [
+                                          osmAttribution,
+                                          leafletRadarAttribution
+                                      ].join(" | ")
+                              }
+                      ).addTo(map3);
+                      //L.control.surface({}).addTo(map3);
+                      L.control.temp({}).addTo(map3);
+                      //L.control.dewp({}).addTo(map3);
+                      //window.onload = onPageLoad_ClickSurface();
+                      window.onload = onPageLoad_ClickTemp();
+                      //window.onload = onPageLoad_ClickDewp();
+              </script>
+            </div>
+
+
+
+            <div class="LowerRightHolder" id="map4">
+                <img class="MesoImage" id="mesoimage" src="https://www.spc.noaa.gov/exper/mesoanalysis/s19/300mb/300mb.gif" border="2">
+                <img class="MesoImage2" id="mesoimage2" src="https://www.spc.noaa.gov/exper/mesoanalysis/s19/padv/padv.gif" border="2">
+            </div>
+
+  </section>
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
