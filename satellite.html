@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <meta http-equiv="refresh" content="300" >
 
   <title>CONUS Satellite</title>
 
@@ -20,7 +19,7 @@
   <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet" href="css/leaflet_satellite.css">
-  <script src="js/leaflet_satellite.js"></script>
+
 
 
 </head>
@@ -66,17 +65,22 @@
       <select onchange="changeDomain1(this.value)">
           <option value="conus" selected="selected">CONUS</option>
           <option value="fullDisk" >Full Disk</option>
-          <option value="meso1" >Meso 1</option>
-          <option value="meso2" >Meso 2</option>
+          <option value="Nplains" >N. Plains</option>
+          <option value="Splains" >S. Plains</option>
+          <option value="GOM" >Gulf of Mexico</option>
+          <option value="Ecoast" >East Coast</option>
+          <option value="Wcoast" >West Coast</option>
       </select>
     </div>
 
     <div class="dropdown_sector1">
       <select onchange="changeSector1(this.value)">
-          <option value="noSector" selected="selected">CONUS</option>
+          <option value="conus" selected="selected">CONUS</option>
+          <option value="fullDisk" >Full Disk</option>
           <option value="Nplains" >N. Plains</option>
           <option value="Cplains" >C. Plains</option>
           <option value="Splains" >S. Plains</option>
+          <option value="GOM" >Gulf of Mexico</option>
       </select>
     </div>
 
@@ -105,8 +109,8 @@
   </div>
 
   <div class="satholder" id="satHolder">
-  <embed class="data1" id="Data1" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband13&lat=36&lon=-96&zoom=2&type=Animation&numframes=10&width=600&height=380&quality=80&palette=ir2.pal'>
-  <embed class="data2" id="Data2" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband02&lat=36&lon=-96&zoom=1&type=Animation&numframes=10&width=600&height=380&quality=80&palette=ir2.pal'>
+  <embed class="data1" id="Data1" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband13&lat=40&lon=-96&zoom=2&type=Animation&numframes=10&width=1500&height=700&quality=80&palette=ir2.pal'>
+  <!--<embed class="data2" id="Data2" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband02&lat=36&lon=-96&zoom=1&type=Animation&numframes=10&width=600&height=380&quality=80&palette=ir2.pal'>-->
   </div>
 
   </section>
@@ -116,7 +120,7 @@
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+  <script src="js/leaflet_satellite.js"></script>
 
 
 
