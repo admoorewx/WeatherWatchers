@@ -73,14 +73,16 @@
       </select>
     </div>
 
-    <div class="dropdown_sector1">
-      <select onchange="changeSector1(this.value)">
-          <option value="conus" selected="selected">CONUS</option>
+
+    <div class="dropdown_product1">
+      <select onchange="changeProduct(this.value)">
+          <option value="01" selected="selected">CONUS</option>
           <option value="fullDisk" >Full Disk</option>
           <option value="Nplains" >N. Plains</option>
-          <option value="Cplains" >C. Plains</option>
           <option value="Splains" >S. Plains</option>
           <option value="GOM" >Gulf of Mexico</option>
+          <option value="Ecoast" >East Coast</option>
+          <option value="Wcoast" >West Coast</option>
       </select>
     </div>
 
@@ -112,6 +114,10 @@
   <embed class="data1" id="Data1" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband13&lat=40&lon=-96&zoom=2&type=Animation&numframes=10&width=1500&height=700&quality=80&palette=ir2.pal'>
   <!--<embed class="data2" id="Data2" src='https://weather.msfc.nasa.gov/cgi-bin/get-abi?satellite=GOESEastconusband02&lat=36&lon=-96&zoom=1&type=Animation&numframes=10&width=600&height=380&quality=80&palette=ir2.pal'>-->
   </div>
+  <script>
+    var current = document.getElementById("Data1").src;
+    console.log(current);
+  </script>
 
   </section>
 
