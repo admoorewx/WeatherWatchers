@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta http-equiv="refresh" content="300" >
+
+  <title>Surface</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Non-Template sytles and JS links -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/obs_test.css">
+
+</head>
+
+<body>
+
+  <!-- clock -->
+  <!-- <div class="Clock1">
+    <center style="font-size:150%;">Current UTC Time:</center>
+  <center id='utc'></center> -->
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Weather Watchers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Radar</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Surface
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="fourPanel.html">Satellite</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="soundings.html">Soundings</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="">Text Products</a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mesoanalysis</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section>
+    <p id="text">Hello</p>
+
+    <div style="position:absolute; top:150px; bottom:10px;">
+        <table id="ObsTable" border="1" style="float: left;margin-left:15px;margin-right:20px">
+          <tr> <!-- header row -->
+              <th>Site</th>
+              <th>City</th>
+              <th>Obs Time</th>
+              <th>Current Wx</th>
+              <th>Temp (F)</th>
+              <th>Dewp (F)</th>
+              <th>Apparent Temp (F)</th>
+              <th>Wind Speed (knts)</th>
+              <th>Wind Direction</th>
+              <th>Wind Gust (knts)</th>
+              <th>Visibility (mi)</th>
+              <th>Pressure (mb)</th>
+              <th>Ceiling (dft)</th>
+              <th>6 hr Precip (in)</th>
+          </tr>
+
+
+
+
+
+        </table>
+
+
+  </section>
+
+  <script type="text/javascript">
+
+    // station list
+    stations = ["kokc","kclk","kelk","kgcm","ksnl","kdua","kchk","krqo"]
+
+    // function for getting data
+    function getObs(site) {
+      console.log("Retrieving Data...")
+      var request = new XMLHttpRequest();
+      request.open('GET','https://api.weather.gov/stations/'+site+'/observations/latest?require_qc=true',true)
+      request.onload = function() {
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400){
+          var tempC = data.properties.temperature.value;
+          var dewpC = data.properties.dewpoint.value;
+          var pres  = data.properties.barometricPressure.value;
+          var heatIndex = data.properties.heatIndex.value;
+          var precip = data.properties.precipitationLast6Hours.value;
+          var time = data.properties.timestamp;
+          var windChill = data.properties.windChill.value;
+          var windDirection = data.properties.windDirection.value;
+          var windSpeedMS = data.properties.windSpeed.value;
+          var windGustMS = data.properties.windGust.value;
+          var visibilityM = data.properties.visibility.value;
+          var ceil = data.properties.cloudLayers.base;
+          var presWx = data.properties.textDescription;
+          console.log(data);
+          var output =  [site,time,presWx,tempC,dewpC,pres,heatIndex,precip,windChill,windDirection,windSpeedMS,windGustMS,visibilityM,ceil];
+          createRow(output);
+        }
+        else {
+          console.log("No Valid Updates.");
+        }
+      }
+      request.send()
+    } // end getObs function
+
+    function createRow(data){
+      var table = document.getElementById("ObsTable");
+      var row = table.insertRow(-1);
+      var siteCell = row.insertCell(0);
+      var cityCell = row.insertCell(1);
+      var timeCell = row.insertCell(2);
+      var wxCell = row.insertCell(3);
+      var tempCell = row.insertCell(4);
+      var dewpCell = row.insertCell(5);
+      var appTCell = row.insertCell(6);
+      var wspdCell = row.insertCell(7);
+      var wdirCell = row.insertCell(8);
+      var gustCell = row.insertCell(9);
+      var visbCell = row.insertCell(10);
+      var presCell = row.insertCell(11);
+      var ceilCell = row.insertCell(12);
+      var precCell = row.insertCell(13);
+
+      siteCell.innerHTML = data[0];
+      cityCell.innerHTML = "City";
+      timeCell.innerHTML = data[1];
+      wxCell.innerHTML = data[2];
+      tempCell.innerHTML = data[3];
+      dewpCell.innerHTML = data[4];
+      appTCell.innerHTML = data[6];
+      wspdCell.innerHTML = data[10];
+      wdirCell.innerHTML = data[9];
+      gustCell.innerHTML = data[11];
+      visbCell.innerHTML = data[12];
+      presCell.innerHTML = data[5];
+      ceilCell.innerHTML = data[13];
+      precCell.innerHTML = data[8];
+
+    } // end createRow function
+
+
+
+
+    //var output =  [site,time,presWx,tempC,dewpC,pres,heatIndex,precip,windChill,windDirection,windSpeedMS,windGustMS,visibilityM,ceil];
+
+
+
+
+
+
+    // loop through the stations
+    for (s = 0; s < stations.length; s++){
+      getObs(stations[s]);
+    }
+  </script>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--<script src="https://cdnres.willyweather.com/widget/warning/loadView.html?id=107463" type="application/javascript"></script>-->
+
+</body>
+
+</html>
