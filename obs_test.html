@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <meta http-equiv="refresh" content="300" >
 
-  <title>Surface</title>
+  <title>Obs Table</title>
 
   <!-- Bootstrap core CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -77,10 +77,40 @@
 
   <!-- Page Content -->
   <section>
-    <p id="text">Hello</p>
+    <div class="submissionForm">
+      <form>
+        Select by state:
+        <select id="StateSelect">
+          <option value="OK">Oklahoma</option>
+          <option value="AR">Arkansas</option>
+        </select>
+        <button type="button" onclick="changeState()">Submit</button>
+      </form>
 
-    <div style="position:absolute; top:150px; bottom:10px;">
-        <table id="ObsTable" border="1" style="float: left;margin-left:15px;margin-right:20px">
+    </div>
+
+
+    <!-- <div class="State_dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown" style="height:35px;background:rgb(204, 204, 179);">Choose By State
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="margin-left:10px;">Oklahoma</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#" style="margin-left:10px;">Arkansas</a></li>
+      </ul>
+    </div> -->
+
+
+    <div class="clockholder" id="clock">
+      <a>Next Update in: <span id="time">05:00</span></a>
+    </div>
+    <div class="dateholder">
+      <a>Current Time: <span id="date"></span> UTC</a>
+    </div>
+
+
+
+    <div class="tableHolder">
+        <table class="table" id="ObsTable" border="3">
           <tr> <!-- header row -->
               <th>Site</th>
               <th>City</th>
@@ -94,51 +124,106 @@
               <th>Wind Gust (knts)</th>
               <th>Visibility (mi)</th>
               <th>Pressure (mb)</th>
-              <th>Ceiling (dft)</th>
-              <th>6 hr Precip (in)</th>
+              <th>Ceiling (hft)</th>
+              <th>1 hr Precip (in)</th>
           </tr>
-
-
-
-
-
         </table>
+      </div>
 
 
   </section>
 
   <script type="text/javascript">
 
+    stations_AR = [
+      ["kfsm", "Fort Smith"],
+      ["kasg", "Springdale"],
+      ["ksuz", "Bentonville"],
+      ["kcxw", "Conway"],
+      ["kmez", "Mena"],
+      ["kcdh", "Camden"],
+      ["kdeq", "DeQueen"],
+      ["khro", "Harrison"],
+      ["krog", "Rogers"],
+      ["kadf", "Arkadelphia"],
+      ["ksrc", "Searcy"],
+      ["kbvx", "Batesville"],
+      ["ksgt", "Stuttgart"],
+      ["km19", "Newport"],
+      ["klit", "Little Rock"],
+      ["kxna", "Northwest AR Regional"],
+      ["keld", "El Dorado"],
+      ["kawm", "West Memphis"],
+      ["kbpk", "Mountain Home"],
+      ["khka", "Blytheville"],
+      ["khot", "Hot Springs"],
+      ["kcca", "Clinton"]
+    ];
+
+    stations_OK = [
+      ["kokc", "Oklahoma City"],
+      ["kclk", "Clinton"],
+      ["kelk", "Elk City"],
+      ["kgcm", "Claremore"],
+      ["kdua", "Durant"],
+      ["kchk", "Chickasha"],
+      ["krqo", "El Reno"],
+      ["ksnl", "Shawnee"],
+      ["kwwr", "Woodward"],
+      ["kduc", "Duncan"],
+      ["kcqb", "Chandler"],
+      ["kjwg", "Watonga"],
+      ["kaxs", "Altus"],
+      ["ktqh", "Tahelquah"],
+      ["kavk", "Alva"],
+      ["kcuh", "Cushing"],
+      ["k4o4", "Idabel"],
+      ["kbkn", "Blackwell"],
+      ["krce", "Yukon"],
+      ["ksre", "Seminole"],
+      ["koja", "Weatherford"],
+      ["kokm", "Oklumgee"],
+      ["kjsv", "Sallisaw"],
+      ["kpjv", "Pauls Valley"],
+      ["krkr", "Poteau"],
+      ["kadm", "Ardmore"],
+      ["kmlc", "McAlester"]
+    ];
+
     // station list
-    stations = ["kokc","kclk","kelk","kgcm","ksnl","kdua","kchk","krqo"]
+    //stations = ["kokc","kclk","kelk","kgcm","ksnl","kdua","kchk","krqo","kfsm"]
 
     // function for getting data
     function getObs(site) {
-      console.log("Retrieving Data...")
       var request = new XMLHttpRequest();
-      request.open('GET','https://api.weather.gov/stations/'+site+'/observations/latest?require_qc=true',true)
+      request.open('GET','https://api.weather.gov/stations/'+site[0]+'/observations/latest?require_qc=true',true)
       request.onload = function() {
         var data = JSON.parse(this.response);
-        if (request.status >= 200 && request.status < 400){
-          var tempC = data.properties.temperature.value;
-          var dewpC = data.properties.dewpoint.value;
-          var pres  = data.properties.barometricPressure.value;
-          var heatIndex = data.properties.heatIndex.value;
-          var precip = data.properties.precipitationLast6Hours.value;
-          var time = data.properties.timestamp;
-          var windChill = data.properties.windChill.value;
-          var windDirection = data.properties.windDirection.value;
-          var windSpeedMS = data.properties.windSpeed.value;
-          var windGustMS = data.properties.windGust.value;
-          var visibilityM = data.properties.visibility.value;
-          var ceil = data.properties.cloudLayers.base;
+        if (request.status >= 200 && request.status < 400) {
+          //console.log(data);
+          var temp = C2F(data.properties.temperature.value);
+          var dewp = C2F(data.properties.dewpoint.value);
+          var pres  = pa2hpa(data.properties.barometricPressure.value);
+          var heatIndex = C2F(data.properties.heatIndex.value);
+          var precip = m2inches(data.properties.precipitationLastHour.value);
+          var time = formatTime(data.properties.timestamp);
+          var windChill = C2F(data.properties.windChill.value);
+          var apparentT = apT(heatIndex,windChill,temp);
+          var windDirection = Math.round(data.properties.windDirection.value);
+          var windSpeedMS = ms2knots(data.properties.windSpeed.value);
+          var windGustMS = ms2knots(data.properties.windGust.value);
+          var visibility = m2miles(data.properties.visibility.value);
+          //console.log(data.properties.cloudLayers[0].base.value)
+          var height = data.properties.cloudLayers[0].base.value; // for now just getting the lowest cloud layer
+          var coverage = data.properties.cloudLayers[0].amount;
+          var ceil = clouds(height,coverage);
           var presWx = data.properties.textDescription;
-          console.log(data);
-          var output =  [site,time,presWx,tempC,dewpC,pres,heatIndex,precip,windChill,windDirection,windSpeedMS,windGustMS,visibilityM,ceil];
+          //console.log(data);
+          var output =  [site[0],site[1],time,presWx,temp,dewp,apparentT,pres,precip,windDirection,windSpeedMS,windGustMS,visibility,ceil];
           createRow(output);
         }
         else {
-          console.log("No Valid Updates.");
+          console.log("No Valid Updates for site "+site[0]);
         }
       }
       request.send()
@@ -163,36 +248,320 @@
       var precCell = row.insertCell(13);
 
       siteCell.innerHTML = data[0];
-      cityCell.innerHTML = "City";
-      timeCell.innerHTML = data[1];
-      wxCell.innerHTML = data[2];
-      tempCell.innerHTML = data[3];
-      dewpCell.innerHTML = data[4];
+      cityCell.innerHTML = data[1];
+      timeCell.innerHTML = data[2];
+      wxCell.innerHTML = data[3];
+      tempCell.innerHTML = data[4];
+      dewpCell.innerHTML = data[5];
       appTCell.innerHTML = data[6];
       wspdCell.innerHTML = data[10];
       wdirCell.innerHTML = data[9];
       gustCell.innerHTML = data[11];
       visbCell.innerHTML = data[12];
-      presCell.innerHTML = data[5];
+      presCell.innerHTML = data[7];
       ceilCell.innerHTML = data[13];
       precCell.innerHTML = data[8];
 
+      tempFormat(tempCell,data[4]);
+      dewpFormat(dewpCell,data[5]);
+      windFormat(wspdCell,data[10]);
+      windFormat(gustCell,data[11]);
+      visFormat(visbCell,data[12]);
+      ceilFormat(ceilCell,data[13]);
+//  0     1     2     3     4        5      6    7         8            9          10         11       12
+//[site,time,presWx,tempC,dewpC,apparentT,pres,precip,windDirection,windSpeedMS,windGustMS,visibility,ceil];
     } // end createRow function
 
+    function tempFormat(cell,value) {
+      alpha = 0.2;
+      if (value >= 100.) {
+       alpha = 0.3;
+       color = 'rgba(255, 51, 204, '+alpha+')';
+      }
+      else if (value < 100 && value >= 90){
+        color = 'rgba(255, 0, 0, '+alpha+')';
+      }
+      else if (value < 90 && value >= 80) {
+        alpha = 0.15;
+        color = 'rgba(255, 153, 0, '+alpha+')';
+      }
+      else if (value <= 32 && value > 20) {
+        color = 'rgba(153, 204, 255, '+alpha+')';
+      }
+      else if (value <= 20 && value > 10) {
+        color = 'rgba(102, 102, 255, '+alpha+')';
+      }
+      else if (value <= 10 && value > 0) {
+        color = 'rgba(0, 0, 255, '+alpha+')';
+      }
+      else if (value <=0) {
+        color = 'rgba(255, 0, 255, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end tempFormat
 
 
+    function dewpFormat(cell,value) {
+      alpha = 0.05;
+      if (value >= 80.) {
+       alpha = 0.4
+       color = 'rgba(204, 102, 255, '+alpha+')';
+      }
+      else if (value < 80 && value >= 70){
+        alpha = 0.25;
+        color = 'rgba(0, 153, 0, '+alpha+')';
+      }
+      else if (value < 70 && value >= 60) {
+        alpha = 0.2;
+        color = 'rgba(102, 255, 102, '+alpha+')';
+      }
+      else if (value <= 60 && value > 50) {
+        alpha = 0.15
+        color = 'rgba(102, 255, 204, '+alpha+')';
+      }
+      else if (value <=20) {
+        color = 'rgba(255, 153, 51, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end dewpFormat
 
-    //var output =  [site,time,presWx,tempC,dewpC,pres,heatIndex,precip,windChill,windDirection,windSpeedMS,windGustMS,visibilityM,ceil];
+    function windFormat(cell,value) {
+      alpha = 0.1;
+      if (value >= 60.) {
+       color = 'rgba(204, 51, 153, '+alpha+')';
+      }
+      else if (value < 60 && value >= 50){
+        alpha = 0.3;
+        color = 'rgba(255, 0, 0, '+alpha+')';
+      }
+      else if (value < 50 && value >= 40) {
+        alpha = 0.2;
+        color = 'rgba(255, 102, 0, '+alpha+')';
+      }
+      else if (value < 40 && value >= 30) {
+        color = 'rgba(255, 204, 102, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end windFormat
+
+    function visFormat(cell,value) {
+      alpha = 0.1;
+      if (value <= 1. && value > 0.5) {
+       color = 'rgba(255, 102, 102, '+alpha+')';
+      }
+      else if (value <= 0.5){
+        alpha = 0.25;
+        color = 'rgba(204, 0, 255, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end visFormat
 
 
+    function ceilFormat(cell,value) {
+      alpha = 0.1;
+      try {
+        coverage = value.substring(0,3);
+        value = (parseFloat(value.substring(4)) * 100.0);
+        if (coverage == "BKN" || coverage == "OVC") {
+          if (value < 500) {
+            alpha = 0.5;
+            color = 'rgba(142, 68, 173, '+alpha+')';
+          }
+          else if (value >= 500 && value < 1000) {
+            alpha = 0.3
+            color = 'rgba(205, 97, 85, '+alpha+')';
+          }
+          else if (value >= 1000 && value < 3000) {
+            color = 'rgba(211, 84, 0, '+alpha+')';
+          }
+          else {
+            color = 'rgba(153, 153, 102, 0)';
+          } // end ceiling ifs
+        } // end coverage if
+        else {
+          color = 'rgba(153, 153, 102, 0)';
+        } // end coverage else
+      } // end "try"
+      catch {
+        color = 'rgba(153, 153, 102, 0)';
+      } // end "catch"
+      cell.style.backgroundColor = color;
+    } // end ceilFormat
 
 
+    function C2F(tempC) {
+      if (tempC == null){
+        return "--"
+      } // end if
+      else {
+        tempF = (1.8 * tempC) + 32.0
+        return Math.round(tempF);
+      } // end else
+    } // end C2F
 
+    function ms2knots(wspdMS) {
+      if (wspdMS == null){
+        return 0.0;
+      } // end if
+      else {
+        wspdKNTS = wspdMS * 1.94384;
+        return Math.round(wspdKNTS);
+      } // end else
+    } // end ms2knots
 
-    // loop through the stations
-    for (s = 0; s < stations.length; s++){
-      getObs(stations[s]);
+    function m2miles(meters) {
+      if (meters == null){
+        return "--"
+      } // end if
+      else {
+        miles = meters * 0.000621371;
+        return miles.toFixed(1);
+      } // end else
+    } // end m2miles
+
+    function pa2hpa(pa) {
+      if (pa == null){
+        return "--"
+      } // end if
+      else {
+        hpa = pa/100.0;
+        return hpa.toFixed(1);
+      } // end else
+    } // end pa2hpa
+
+    function m2inches(m) {
+      if (m == null){
+        return "0.00"
+      } // end if
+      else {
+        inches = m *39.3701;
+        return inches.toFixed(2);
+      } // end else
+    } // end m2inches
+
+    function clouds(height,coverage) {
+      if (height == null || coverage == null) {
+        return "Clear"
+      }// end if
+      else {
+        height = Math.round(((height * 3.28084) / 100.0)) // meters to feet
+        if (height < 10) { // begin a series of quick checks to format the ceiling like in a metar
+          height = "00" + height.toString();
+        } // end if
+        else if (height < 100) {
+          height = "0"+ height.toString();
+        } // end elseif
+        else {
+          height = height.toString();
+        } // end else
+        return coverage + " " + height
+      } // end else
+    } // end clouds
+
+    function formatTime(datetime) {
+      year = datetime.substring(0,4);
+      date = datetime.substring(5,10);
+      time = datetime.substring(11,16)
+      return date + "-"+ year + " " + time + " UTC"
     }
+
+    function apT(windChill,heatIndex,temp) {
+      console.log(windChill,heatIndex,temp);
+      if (heatIndex == "--") {
+        if (windChill == "--"){
+          return temp;
+        }
+        else {
+          return windChill;
+        }
+      }
+      else if (heatIndex < 50) {
+        if (windChill == "--"){
+          return temp;
+        }
+        else {
+          return windChill;
+        }
+      }
+    } // end apT
+
+
+    function changeState() {
+      var state = document.getElementById("StateSelect").value;
+      return state;
+    } // end function changeState
+
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    } // end function startTimer
+
+
+    var span = document.getElementById('date');
+    function clock() {
+      var d = new Date();
+      var s = d.getSeconds();
+      var m = d.getMinutes();
+      var h = d.getUTCHours();
+      if (s < 10) {
+        s = "0" + s;
+      }
+      if (m < 10) {
+        m = "0" + m;
+      }
+      span.textContent = h + ":" + m + ":" + s;
+    } // end function clock
+
+/////////////////// END OF FUNCTIONS ////////////////////
+    // loop through the stations
+    var state = changeState();
+    if (state == "OK") {
+      var station_list = stations_OK;
+    }
+    else if (state == "AR") {
+      var station_list = stations_AR;
+    }
+    for (s = 0; s < station_list.length; s++){
+      getObs(station_list[s]);
+      //console.log(stations_OK[s]);
+    }
+
+    window.onload = function () {
+        setInterval(clock, 1000);
+        var fiveMinutes = 60 * 5,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+
+
   </script>
 
 

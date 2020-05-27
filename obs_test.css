@@ -7,17 +7,43 @@ body {
   -o-background-size: cover;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto; */
-  background-color: #2196F3;
-  padding: 5px;
+.tableHolder {
+  height: 90vh;
+  left: 2vw;
+  right: 2vw;
+  width: 96vw;
+  position: absolute;
+  top: 40px;
 }
 
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 10px;
-  font-size: 30px;
+.table {
+  background: rgba(214, 214, 194, 0.75);
+  text-align: center;
+  font-size: 9px;
+  line-height: 5px
+}
+
+.clockholder {
+  position: absolute;
+  right: 1vw;
+  width: 200px;
+  height: 25px;
+  top: 10px;
+  text-align: center;
+}
+
+.dateholder {
+  position: absolute;
+  right: 20vw;
+  width: 200px;
+  height: 25px;
+  top: 10px;
+  text-align: center;
+}
+
+.submissionForm {
+  position: absolute;
+  left: 2vw;
+  top: 5px;
   text-align: center;
 }
