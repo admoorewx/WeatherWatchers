@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--<meta http-equiv="refresh" content="300" > -->
+
+  <title>Obs Table</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Non-Template sytles and JS links -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/obs_test_scroll.css">
+
+</head>
+
+<body>
+
+  <!-- clock -->
+  <!-- <div class="Clock1">
+    <center style="font-size:150%;">Current UTC Time:</center>
+  <center id='utc'></center> -->
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">Weather Watchers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Radar</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Surface
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="fourPanel.html">Satellite</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="soundings.html">Soundings</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="">Text Products</a>
+          </li>
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">Mesoanalysis</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <section>
+    <div class="submissionForm">
+      <form  style="color:white;">
+        Select by state:
+        <select id="StateSelect">
+          <option value="OK">Oklahoma</option>
+          <option value="AR">Arkansas</option>
+          <option value="IL">Illinois</option>
+        </select>
+        <button type="button" onclick="changeState()">Submit</button>
+      </form>
+    </div>
+
+    <div class="clockholder" id="clock">
+      <a style="color:white;">Next Update in: <span id="time">05:00</span></a>
+    </div>
+
+    <div class="dateholder">
+      <a style="color:white;">Current Time: <span id="date"></span> UTC</a>
+    </div>
+
+    <div class="tableHolder">
+        <table class="table" id="ObsTable" border="3">
+        </table>
+      </div>
+
+      <div class="headerRow">
+        <table class="tableHeader" border="3">
+          <tr> <!-- header row -->
+              <th class="site">Site</th>
+              <th class="city">City</th>
+              <th class="obsTime">Obs Time</th>
+              <th class="currentWX">Current Wx</th>
+              <th class="temp">Temp (F)</th>
+              <th class="dewp">Dewp (F)</th>
+              <th class="ApTemp">Apparent Temp (F)</th>
+              <th class="wspd">Wind Speed (knts)</th>
+              <th class="wdir">Wind Direction</th>
+              <th class="gust">Wind Gust (knts)</th>
+              <th class="visb">Visibility (mi)</th>
+              <th class="pres">Pressure (mb)</th>
+              <th class="ceil">Ceiling (hft)</th>
+              <th class="prec">1 hr Precip (in)</th>
+          </tr>
+        </table>
+      </div>
+
+
+  </section>
+
+  <script type="text/javascript">
+
+    stations_AR = [
+      ["kfsm", "Fort Smith"],
+      ["kasg", "Springdale"],
+      ["ksuz", "Bentonville"],
+      ["kcxw", "Conway"],
+      ["kmez", "Mena"],
+      ["kcdh", "Camden"],
+      ["kdeq", "DeQueen"],
+      ["khro", "Harrison"],
+      ["krog", "Rogers"],
+      ["kadf", "Arkadelphia"],
+      ["ksrc", "Searcy"],
+      ["kbvx", "Batesville"],
+      ["ksgt", "Stuttgart"],
+      ["km19", "Newport"],
+      ["klit", "Little Rock"],
+      ["kxna", "NW AR Regional"],
+      ["keld", "El Dorado"],
+      ["kawm", "West Memphis"],
+      ["kbpk", "Mountain Home"],
+      ["khka", "Blytheville"],
+      ["khot", "Hot Springs"],
+      ["kcca", "Clinton"]
+    ];
+
+    stations_OK = [
+      ["kokc", "Oklahoma City"],
+      ["kclk", "Clinton"],
+      ["kelk", "Elk City"],
+      ["kgcm", "Claremore"],
+      ["kdua", "Durant"],
+      ["kchk", "Chickasha"],
+      ["krqo", "El Reno"],
+      ["ksnl", "Shawnee"],
+      ["kwwr", "Woodward"],
+      ["kduc", "Duncan"],
+      ["kcqb", "Chandler"],
+      ["kjwg", "Watonga"],
+      ["kaxs", "Altus"],
+      ["ktqh", "Talhequah"],
+      ["kavk", "Alva"],
+      ["kcuh", "Cushing"],
+      ["k4o4", "Idabel"],
+      ["kbkn", "Blackwell"],
+      ["krce", "Yukon"],
+      ["ksre", "Seminole"],
+      ["koja", "Weatherford"],
+      ["kokm", "Okmulgee"],
+      ["kjsv", "Sallisaw"],
+      ["kpjv", "Pauls Valley"],
+      ["krkr", "Poteau"],
+      ["kadm", "Ardmore"],
+      ["kmlc", "McAlester"]
+    ];
+
+    stations_IL = [
+      ["kikk", "Kankakee"],
+      ["kigq", "Chicago"],
+      ["kvys", "Peru"],
+      ["kprg", "Paris"],
+      ["kpnt", "Pontiac"],
+      ["k1h2", "Effingham"],
+      ["kdnv", "Danville"],
+      ["ktaz", "Taylorville"],
+      ["kfwc", "Fairfield"],
+      ["kc09","Morris-Washburn"],
+      ["krsv", "Robinson"],
+      ["ktip", "Rantoul"],
+      ["kgbg", "Galesburg"],
+      ["kaaa", "Lincoln"],
+      ["kcir", "Cairo"],
+      ["kfep", "Freeport"],
+      ["koly", "Olney-Noble"],
+      ["kppq", "Pittsfield"],
+      ["krpj", "Rochelle"],
+      ["k3lf", "Litchfield"],
+      ["kc75", "Lacon"],
+      ["kenl", "Centralia"],
+      ["kijx", "Jacksonville"],
+      ["ksar", "Sparta"],
+      ["kajg", "Mount Carmel"],
+      ["kjot", "Joliet"],
+      ["kdkb", "De Kalb"],
+      ["km30", "Metropolis"],
+      ["kfoa", "Harrisburg"],
+      ["kslo", "Salem"],
+      ["kmqb", "Macomb"],
+      ["kcul", "Carmi"],
+      ["kmvn", "Mount Vernon"],
+      ["kbmi", "Bloomington"],
+      ["kblv", "Scott AFB"],
+      ["ksqi", "Sterling Rockfal"],
+      ["kugn", "Waukegan"],
+      ["kdec", "Decatur"],
+      ["kpia", "Peoria"],
+      ["kuin", "Quincy"],
+      ["krfd", "Rockford"],
+      ["kmdw", "Chicago"],
+      ["kcmi", "Champaign"],
+      ["kcps", "Cahokia"],
+      ["klwv", "Lawrenceville"],
+      ["kmto", "Mattoon"],
+      ["kmdh", "Carbondale"],
+      ["kdpa", "DuPage"],
+      ["karr", "Aurora"],
+      ["kmli", "Moline"],
+      ["kspi", "Springfield"],
+      ["kpwk", "Palwaukee"],
+      ["kord", "O Hare"],
+      ["kaln", "Alton"],
+      ["kmwa", "Marion"]
+    ];
+
+
+    // station list
+    //stations = ["kokc","kclk","kelk","kgcm","ksnl","kdua","kchk","krqo","kfsm"]
+
+    // function for getting data
+    function getObs(site) {
+      var request = new XMLHttpRequest();
+      request.open('GET','https://api.weather.gov/stations/'+site[0]+'/observations/latest?require_qc=true',true)
+      request.onload = function() {
+        var data = JSON.parse(this.response);
+        if (request.status >= 200 && request.status < 400) {
+          //console.log(data);
+          var temp = C2F(data.properties.temperature.value);
+          var dewp = C2F(data.properties.dewpoint.value);
+          var pres  = pa2hpa(data.properties.barometricPressure.value);
+          var heatIndex = C2F(data.properties.heatIndex.value);
+          var precip = m2inches(data.properties.precipitationLastHour.value);
+          var time = formatTime(data.properties.timestamp);
+          var windChill = C2F(data.properties.windChill.value);
+          var apparentT = apT(heatIndex,windChill,temp);
+          var windDirection = Math.round(data.properties.windDirection.value);
+          var windSpeedMS = ms2knots(data.properties.windSpeed.value);
+          var windGustMS = ms2knots(data.properties.windGust.value);
+          var visibility = m2miles(data.properties.visibility.value);
+          //console.log(data.properties.cloudLayers[0].base.value)
+          var height = data.properties.cloudLayers[0].base.value; // for now just getting the lowest cloud layer
+          var coverage = data.properties.cloudLayers[0].amount;
+          var ceil = clouds(height,coverage);
+          var presWx = data.properties.textDescription;
+          //console.log(data);
+          var output =  [site[0],site[1],time,presWx,temp,dewp,apparentT,pres,precip,windDirection,windSpeedMS,windGustMS,visibility,ceil];
+          createRow(output);
+        }
+        else {
+          console.log("No Valid Updates for site "+site[0]);
+        }
+      }
+      request.send()
+    } // end getObs function
+
+    function createRow(data){
+      var table = document.getElementById("ObsTable");
+      var row = table.insertRow(-1);
+      var siteCell = row.insertCell(0);
+      var cityCell = row.insertCell(1);
+      var timeCell = row.insertCell(2);
+      var wxCell = row.insertCell(3);
+      var tempCell = row.insertCell(4);
+      var dewpCell = row.insertCell(5);
+      var appTCell = row.insertCell(6);
+      var wspdCell = row.insertCell(7);
+      var wdirCell = row.insertCell(8);
+      var gustCell = row.insertCell(9);
+      var visbCell = row.insertCell(10);
+      var presCell = row.insertCell(11);
+      var ceilCell = row.insertCell(12);
+      var precCell = row.insertCell(13);
+
+      siteCell.innerHTML = data[0];
+      cityCell.innerHTML = data[1];
+      timeCell.innerHTML = data[2];
+      wxCell.innerHTML = data[3];
+      tempCell.innerHTML = data[4];
+      dewpCell.innerHTML = data[5];
+      appTCell.innerHTML = data[6];
+      wspdCell.innerHTML = data[10];
+      wdirCell.innerHTML = data[9];
+      gustCell.innerHTML = data[11];
+      visbCell.innerHTML = data[12];
+      presCell.innerHTML = data[7];
+      ceilCell.innerHTML = data[13];
+      precCell.innerHTML = data[8];
+
+      siteCell.style.width = '60px';
+      cityCell.style.width = '90px';
+      timeCell.style.width = '120px';
+      wxCell.style.width = '120px';
+      tempCell.style.width = '50px';
+      dewpCell.style.width = '50px';
+      appTCell.style.width = '90px';
+      wspdCell.style.width = '90px';
+      wdirCell.style.width = '90px';
+      gustCell.style.width = '90px';
+      visbCell.style.width = '70px';
+      presCell.style.width = '70px';
+      ceilCell.style.width = '70px';
+      precCell.style.width = '70px';
+
+
+      checkTime(timeCell,data[2]);
+      tempFormat(tempCell,data[4]);
+      tempFormat(appTCell,data[6]);
+      dewpFormat(dewpCell,data[5]);
+      windFormat(wspdCell,data[10]);
+      windFormat(gustCell,data[11]);
+      visFormat(visbCell,data[12]);
+      ceilFormat(ceilCell,data[13]);
+
+//  0     1     2     3     4        5      6    7         8            9          10         11       12
+//[site,time,presWx,tempC,dewpC,apparentT,pres,precip,windDirection,windSpeedMS,windGustMS,visibility,ceil];
+    } // end createRow function
+
+    function tempFormat(cell,value) {
+      alpha = 0.2;
+      if (value >= 100.) {
+       alpha = 0.3;
+       color = 'rgba(255, 51, 204, '+alpha+')';
+      }
+      else if (value < 100 && value >= 90){
+        color = 'rgba(255, 0, 0, '+alpha+')';
+      }
+      else if (value < 90 && value >= 80) {
+        alpha = 0.15;
+        color = 'rgba(255, 153, 0, '+alpha+')';
+      }
+      else if (value <= 32 && value > 20) {
+        color = 'rgba(153, 204, 255, '+alpha+')';
+      }
+      else if (value <= 20 && value > 10) {
+        color = 'rgba(102, 102, 255, '+alpha+')';
+      }
+      else if (value <= 10 && value > 0) {
+        color = 'rgba(0, 0, 255, '+alpha+')';
+      }
+      else if (value <=0) {
+        color = 'rgba(255, 0, 255, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end tempFormat
+
+
+    function dewpFormat(cell,value) {
+      alpha = 0.05;
+      if (value >= 80.) {
+       alpha = 0.4
+       color = 'rgba(204, 102, 255, '+alpha+')';
+      }
+      else if (value < 80 && value >= 70){
+        alpha = 0.25;
+        color = 'rgba(0, 153, 0, '+alpha+')';
+      }
+      else if (value < 70 && value >= 60) {
+        alpha = 0.2;
+        color = 'rgba(102, 255, 102, '+alpha+')';
+      }
+      else if (value <= 60 && value > 50) {
+        alpha = 0.15
+        color = 'rgba(102, 255, 204, '+alpha+')';
+      }
+      else if (value <=20) {
+        color = 'rgba(255, 153, 51, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end dewpFormat
+
+    function windFormat(cell,value) {
+      alpha = 0.1;
+      if (value >= 60.) {
+       color = 'rgba(204, 51, 153, '+alpha+')';
+      }
+      else if (value < 60 && value >= 50){
+        alpha = 0.3;
+        color = 'rgba(255, 0, 0, '+alpha+')';
+      }
+      else if (value < 50 && value >= 40) {
+        alpha = 0.2;
+        color = 'rgba(255, 102, 0, '+alpha+')';
+      }
+      else if (value < 40 && value >= 30) {
+        color = 'rgba(255, 204, 102, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end windFormat
+
+    function visFormat(cell,value) {
+      alpha = 0.1;
+      if (value <= 1. && value > 0.5) {
+       color = 'rgba(255, 102, 102, '+alpha+')';
+      }
+      else if (value <= 0.5){
+        alpha = 0.25;
+        color = 'rgba(204, 0, 255, '+alpha+')';
+      }
+      else {
+       color = 'rgba(153, 153, 102, 0)';
+      }
+      //console.log(value)
+      cell.style.backgroundColor = color;
+    } // end visFormat
+
+
+    function checkTime(cell,value) {
+      var current = Date.now();
+      var obs_time = Date.parse(value);
+      var diff = ((current - obs_time) / 1000.0) / 3600.0;
+      if (diff > 4.0) {
+        alpha = 0.4;
+        color = 'rgba(230, 0, 0, '+alpha+')';
+      }
+      else if (diff > 1.5) {
+        alpha = 0.2;
+        color = 'rgba(255, 117, 26, '+alpha+')';
+      }
+      else {
+        alpha = 0
+        color = 'rgba(255, 117, 26, '+alpha+')';
+      }
+      cell.style.backgroundColor = color;
+    } // end checkTime
+
+
+    function ceilFormat(cell,value) {
+      alpha = 0.1;
+      try {
+        coverage = value.substring(0,3);
+        value = (parseFloat(value.substring(4)) * 100.0);
+        if (coverage == "BKN" || coverage == "OVC") {
+          if (value < 500) {
+            alpha = 0.5;
+            color = 'rgba(142, 68, 173, '+alpha+')';
+          }
+          else if (value >= 500 && value < 1000) {
+            alpha = 0.3
+            color = 'rgba(205, 97, 85, '+alpha+')';
+          }
+          else if (value >= 1000 && value < 3000) {
+            color = 'rgba(211, 84, 0, '+alpha+')';
+          }
+          else {
+            color = 'rgba(153, 153, 102, 0)';
+          } // end ceiling ifs
+        } // end coverage if
+        else {
+          color = 'rgba(153, 153, 102, 0)';
+        } // end coverage else
+      } // end "try"
+      catch {
+        color = 'rgba(153, 153, 102, 0)';
+      } // end "catch"
+      cell.style.backgroundColor = color;
+    } // end ceilFormat
+
+
+    function C2F(tempC) {
+      if (tempC == null){
+        return "--"
+      } // end if
+      else {
+        tempF = (1.8 * tempC) + 32.0
+        return Math.round(tempF);
+      } // end else
+    } // end C2F
+
+    function ms2knots(wspdMS) {
+      if (wspdMS == null){
+        return 0.0;
+      } // end if
+      else {
+        wspdKNTS = wspdMS * 1.94384;
+        return Math.round(wspdKNTS);
+      } // end else
+    } // end ms2knots
+
+    function m2miles(meters) {
+      if (meters == null){
+        return "--"
+      } // end if
+      else {
+        miles = meters * 0.000621371;
+        return miles.toFixed(1);
+      } // end else
+    } // end m2miles
+
+    function pa2hpa(pa) {
+      if (pa == null){
+        return "--"
+      } // end if
+      else {
+        hpa = pa/100.0;
+        return hpa.toFixed(1);
+      } // end else
+    } // end pa2hpa
+
+    function m2inches(m) {
+      if (m == null){
+        return "0.00"
+      } // end if
+      else {
+        inches = m *39.3701;
+        return inches.toFixed(2);
+      } // end else
+    } // end m2inches
+
+    function clouds(height,coverage) {
+      if (height == null || coverage == null) {
+        return "Clear"
+      }// end if
+      else {
+        height = Math.round(((height * 3.28084) / 100.0)) // meters to feet
+        if (height < 10) { // begin a series of quick checks to format the ceiling like in a metar
+          height = "00" + height.toString();
+        } // end if
+        else if (height < 100) {
+          height = "0"+ height.toString();
+        } // end elseif
+        else {
+          height = height.toString();
+        } // end else
+        return coverage + " " + height
+      } // end else
+    } // end clouds
+
+    function formatTime(datetime) {
+      year = datetime.substring(0,4);
+      date = datetime.substring(5,10);
+      time = datetime.substring(11,16)
+      return date + "-"+ year + " " + time + " UTC"
+    }
+
+    function apT(windChill,heatIndex,temp) {
+      //console.log(windChill,heatIndex,temp);
+      if (heatIndex == "--") {
+        if (windChill == "--"){
+          return temp;
+        }
+        else {
+          return windChill;
+        }
+      }
+      else if (heatIndex < 50) {
+        if (windChill == "--"){
+          return temp;
+        }
+        else {
+          return windChill;
+        }
+      }
+    } // end apT
+
+
+    function changeState() {
+      var state = document.getElementById("StateSelect").value;
+      // loop through the stations
+      if (state == "OK") {
+        var station_list = stations_OK;
+      }
+      else if (state == "AR") {
+        var station_list = stations_AR;
+      }
+      else if (state == "IL") {
+        var station_list = stations_IL;
+      }
+      // clear out the old obs before adding the new ones
+      document.getElementById('ObsTable').innerHTML = '';
+      for (s = 0; s < station_list.length; s++){
+        getObs(station_list[s]);
+      }
+
+
+
+    } // end function changeState
+
+    function startTimer(duration, display, station_list) {
+        var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                changeState(); // refresh the data
+                timer = duration;
+            }
+        }, 1000);
+    } // end function startTimer
+
+
+    var span = document.getElementById('date');
+    function clock() {
+      var d = new Date();
+      var s = d.getSeconds();
+      var m = d.getMinutes();
+      var h = d.getUTCHours();
+      if (s < 10) {
+        s = "0" + s;
+      }
+      if (m < 10) {
+        m = "0" + m;
+      }
+      span.textContent = h + ":" + m + ":" + s;
+    } // end function clock
+
+/////////////////// END OF FUNCTIONS ////////////////////
+
+
+    // script that controls the reset
+    window.onload = function () {
+        setInterval(clock, 1000);
+        var fiveMinutes = 60 * 5,
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+
+
+    /// script that controls the scroll
+    var i = 0;
+    $(document).ready(function(){
+      var interval = setInterval(function () {
+        i += 2; // speed
+        $('.tableHolder').animate({ scrollTop: i }, 1);
+        if (i >= $('.tableHolder').prop('scrollHeight') - $('.tableHolder').height()) {
+          setTimeout(function(){i=0}, 3000);
+          //i = 0;
+        }
+      }, 100);
+    });
+
+
+    // default list of stations (OK)
+    station_list = stations_OK;
+    for (s = 0; s < station_list.length; s++){
+      getObs(station_list[s]);
+      //console.log(stations_OK[s]);
+    }
+
+
+
+  </script>
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!--<script src="https://cdnres.willyweather.com/widget/warning/loadView.html?id=107463" type="application/javascript"></script>-->
+
+</body>
+
+</html>

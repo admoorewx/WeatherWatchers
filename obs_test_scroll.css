@@ -1,0 +1,124 @@
+body {
+  background: #5F708C;
+  width:100vw;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+}
+
+.tableHolder {
+  height: 80vh;
+  left: 2vw;
+  right: 2vw;
+  width: 96vw;
+  position: absolute;
+  top: 65px;
+  overflow: hidden;
+}
+
+.table {
+  background: rgba(214, 214, 194, 0.75);
+  text-align: center;
+  font-size: 9px;
+  line-height: 5px
+}
+
+.headerRow {
+  background-color: rgba(214, 214, 194,0);
+  opacity: 1;
+  left: 2vw;
+  right: 2vw;
+  width: 96vw;
+  position: absolute;
+  top: 40px;
+}
+
+.tableHeader {
+  background-color: rgba(214, 214, 194,1);
+  width: 96vw;
+  text-align: center;
+  font-size: 9px;
+  line-height: 25px
+}
+
+.site{
+  width: 60px;
+}
+
+.city{
+  width: 90px;
+}
+
+.obsTime{
+  width: 120px;
+}
+
+.currentWX {
+  width: 120px;
+}
+
+.temp {
+  width: 50px;
+}
+
+.dewp {
+  width: 50px;
+}
+
+.ApTemp {
+  width: 90px;
+}
+
+.wspd {
+  width: 90px;
+}
+
+.wdir {
+  width: 90px;
+}
+
+.gust {
+  width: 90px;
+}
+
+.visb {
+  width: 70px;
+}
+
+.pres {
+  width: 70px;
+}
+
+.ceil {
+  width: 70px;
+}
+
+.prec {
+  width: 70px;
+}
+
+.clockholder {
+  position: absolute;
+  right: 1vw;
+  width: 200px;
+  height: 25px;
+  top: 10px;
+  text-align: center;
+}
+
+.dateholder {
+  position: absolute;
+  right: 20vw;
+  width: 200px;
+  height: 25px;
+  top: 10px;
+  text-align: center;
+}
+
+.submissionForm {
+  position: absolute;
+  left: 2vw;
+  top: 5px;
+  text-align: center;
+}
